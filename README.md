@@ -17,6 +17,7 @@ This repository contains my final Jupyter notebook, experiment outputs, and mode
 ## Project Highlights
 
 - Built an end-to-end RUL prediction workflow in Jupyter Notebook
+- Added preprocessing notebooks for multiple C-MAPSS dataset variants
 - Used all four C-MAPSS subsets for training and evaluation
 - Compared multiple deep learning architectures for RUL estimation
 - Evaluated models using `RMSE` and NASA scoring metric
@@ -53,11 +54,23 @@ Detailed metrics are available in [metrics_summary.json](metrics_summary.json).
 
 ```text
 turbofan-rul-prediction/
+├── 01A_data_preprocessing.ipynb
+├── 01B_data_preprocessing.ipynb
+├── 01C_data_preprocessing.ipynb
+├── 01D_data_preprocessing (1).ipynb
 ├── RUL_FINAL_PROJECT.ipynb
+├── index.html
+├── styles.css
+├── script.js
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
 ├── metrics_summary.json
+├── outputs 2/
+│   ├── outputs-01A/
+│   ├── outputs-01B/
+│   ├── outputs-01C/
+│   └── outputs-01D/
 └── assets/
     ├── sensor_degradation.png
     ├── sensor_selection.png

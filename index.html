@@ -3,35 +3,41 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Turbofan RUL Prediction</title>
+    <meta
+      name="description"
+      content="Rahul Dadwal's turbofan engine Remaining Useful Life prediction project using NASA C-MAPSS, preprocessing pipelines, and deep learning model comparison."
+    >
+    <title>Turbofan RUL Prediction | Rahul Dadwal</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <header class="app-header">
+    <header class="app-header" id="overview">
       <nav class="topbar" aria-label="Primary navigation">
-        <a class="brand" href="#overview">Turbofan RUL</a>
+        <a class="brand" href="#overview">Rahul Dadwal</a>
         <div class="nav-links">
+          <a href="#pipeline">Pipeline</a>
           <a href="#results">Results</a>
-          <a href="#visuals">Visuals</a>
-          <a href="RUL_FINAL_PROJECT.ipynb">Notebook</a>
+          <a href="#outputs">Outputs</a>
+          <a href="#notebooks">Notebooks</a>
           <a href="https://github.com/rahulxdadwal/turbofan-RUL-prediction">GitHub</a>
         </div>
       </nav>
 
-      <section class="hero" id="overview">
+      <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Predictive maintenance dashboard</p>
-          <h1>Remaining Useful Life prediction for NASA C-MAPSS turbofan engines</h1>
+          <p class="eyebrow">NASA C-MAPSS predictive maintenance</p>
+          <h1>Turbofan engine RUL prediction with preprocessing and deep learning experiments</h1>
           <p>
-            A deep learning workflow comparing sequence models for aircraft engine
-            degradation across FD001, FD002, FD003, and FD004.
+            A complete Remaining Useful Life workflow covering sensor preprocessing,
+            sliding-window sequence generation, model comparison, and explainable output artifacts.
           </p>
           <div class="hero-actions" aria-label="Project links">
-            <a class="button primary" href="#results">View model results</a>
-            <a class="button secondary" href="RUL_FINAL_PROJECT.ipynb">Open notebook</a>
+            <a class="button primary" href="#results">Explore Results</a>
+            <a class="button secondary" href="RUL_FINAL_PROJECT.ipynb">Open Final Notebook</a>
           </div>
         </div>
-        <div class="hero-panel" aria-label="Best model summary">
+
+        <aside class="hero-panel" aria-label="Project summary">
           <div>
             <span class="metric-label">Best FD001 RMSE</span>
             <strong>12.558</strong>
@@ -43,11 +49,11 @@
             <span>SA-FCLCNN-TF-PINN</span>
           </div>
           <div>
-            <span class="metric-label">Window size</span>
-            <strong>50</strong>
-            <span>cycles per sequence</span>
+            <span class="metric-label">Preprocessing variants</span>
+            <strong>4</strong>
+            <span>01A through 01D</span>
           </div>
-        </div>
+        </aside>
       </section>
     </header>
 
@@ -56,18 +62,47 @@
         <article>
           <span>Dataset</span>
           <strong>NASA C-MAPSS</strong>
-          <p>Multivariate time-series readings from simulated turbofan engines.</p>
+          <p>FD001, FD002, FD003, and FD004 turbofan degradation subsets.</p>
         </article>
         <article>
-          <span>Task</span>
-          <strong>RUL regression</strong>
-          <p>Estimate remaining cycles before failure using sensor degradation patterns.</p>
+          <span>Preprocessing</span>
+          <strong>50-cycle windows</strong>
+          <p>Standard scaling, RUL capping, train/validation/test splits, and sequence generation.</p>
         </article>
         <article>
           <span>Evaluation</span>
           <strong>RMSE and NASA score</strong>
-          <p>Model comparison covers all four operating-condition subsets.</p>
+          <p>Comparison across baseline LSTM, CNN, paper baseline, attention, and PINN variants.</p>
         </article>
+      </section>
+
+      <section class="section split" id="pipeline">
+        <div class="section-heading">
+          <p class="eyebrow">Preprocessing pipeline</p>
+          <h2>From raw cycles to model-ready sequences</h2>
+        </div>
+        <div class="pipeline" aria-label="Preprocessing steps">
+          <article>
+            <span>01</span>
+            <h3>Load and label engines</h3>
+            <p>Compute RUL from lifecycle length and cap targets at 125 cycles.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Select and scale sensors</h3>
+            <p>Keep useful operating settings and sensor channels, then apply StandardScaler.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Create sliding windows</h3>
+            <p>Build 50-cycle multivariate sequences with stride 1 for time-series learning.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Export artifacts</h3>
+            <p>Store metadata, feature lists, scalers, processed arrays, and quality-check plots.</p>
+          </article>
+        </div>
       </section>
 
       <section class="section" id="results">
@@ -103,12 +138,12 @@
         <div class="bars" id="best-bars"></div>
       </section>
 
-      <section class="section visuals" id="visuals">
+      <section class="section" id="outputs">
         <div class="section-heading">
-          <p class="eyebrow">Experiment visuals</p>
-          <h2>Sensor behavior and training curves</h2>
+          <p class="eyebrow">Output artifacts</p>
+          <h2>Preprocessing and experiment visuals</h2>
         </div>
-        <div class="visual-grid">
+        <div class="artifact-grid">
           <figure>
             <img src="assets/sensor_degradation.png" alt="Sensor degradation over engine life">
             <figcaption>Sensor degradation</figcaption>
@@ -121,13 +156,50 @@
             <img src="assets/lstm_learning_curves.png" alt="LSTM model learning curves">
             <figcaption>LSTM learning curves</figcaption>
           </figure>
+          <figure>
+            <img src="outputs%202/outputs-01A/eda_sensor_trends_FD001.png" alt="FD001 sensor trend EDA">
+            <figcaption>FD001 sensor trends</figcaption>
+          </figure>
+          <figure>
+            <img src="outputs%202/outputs-01A/eda_corr_heatmap_FD001.png" alt="FD001 correlation heatmap">
+            <figcaption>FD001 correlation heatmap</figcaption>
+          </figure>
+          <figure>
+            <img src="outputs%202/outputs-01D/synth_qa_FD001.png" alt="Synthetic data quality check for FD001">
+            <figcaption>Synthetic QA check</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="metadata">
+        <div class="section-heading">
+          <p class="eyebrow">Run metadata</p>
+          <h2>Preprocessing variants</h2>
+        </div>
+        <div class="metadata-grid" id="metadata-grid">
+          <article>Loading preprocessing metadata...</article>
+        </div>
+      </section>
+
+      <section class="section" id="notebooks">
+        <div class="section-heading">
+          <p class="eyebrow">Reproducibility</p>
+          <h2>Project notebooks</h2>
+        </div>
+        <div class="notebook-grid">
+          <a href="01A_data_preprocessing.ipynb">01A data preprocessing</a>
+          <a href="01B_data_preprocessing.ipynb">01B data preprocessing</a>
+          <a href="01C_data_preprocessing.ipynb">01C data preprocessing</a>
+          <a href="01D_data_preprocessing%20(1).ipynb">01D data preprocessing</a>
+          <a href="RUL_FINAL_PROJECT.ipynb">Final RUL modeling notebook</a>
+          <a href="metrics_summary.json">Metrics summary JSON</a>
         </div>
       </section>
     </main>
 
     <footer>
       <span>Built by Rahul Dadwal</span>
-      <a href="metrics_summary.json">Metrics JSON</a>
+      <a href="https://github.com/rahulxdadwal/turbofan-RUL-prediction">View repository</a>
     </footer>
 
     <script src="script.js"></script>

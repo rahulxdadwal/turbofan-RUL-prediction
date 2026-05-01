@@ -1,0 +1,16 @@
+{
+  "window_size": 50,
+  "stride": 1,
+  "rul_cap": 125,
+  "train_frac": 0.7,
+  "val_frac": 0.15,
+  "random_seed": 42,
+  "scaler_type": "StandardScaler",
+  "datasets": [
+    "FD001",
+    "FD002",
+    "FD003",
+    "FD004"
+  ],
+  "variant": "FD001+FD002+FD003+FD004"
+}
