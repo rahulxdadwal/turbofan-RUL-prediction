@@ -6,7 +6,7 @@ This repository contains my final Jupyter notebook, experiment outputs, and mode
 
 ## Live App
 
-[Open the deployed project dashboard](https://rahulxdadwal.github.io/turbofan-RUL-prediction/)
+[Open the deployed RUL prediction app](https://rahulxdadwal.github.io/turbofan-RUL-prediction/?api=https://turbofan-rul-api.onrender.com#predictor)
 
 ## Dataset
 
