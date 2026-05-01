@@ -23,8 +23,17 @@ const metadataFiles = [
   },
 ];
 
+const subsetProfiles = {
+  FD001: { complexity: 0.85, baseLife: 132 },
+  FD002: { complexity: 1.08, baseLife: 118 },
+  FD003: { complexity: 0.94, baseLife: 126 },
+  FD004: { complexity: 1.18, baseLife: 110 },
+};
+
+let modelRows = [];
+
 function formatMetric(value) {
-  return Number(value).toFixed(3);
+  return value == null ? "N/A" : Number(value).toFixed(3);
 }
 
 function getRows(metrics) {
@@ -42,6 +51,29 @@ function bestBySubset(rows, subset) {
       return { model: row.name, rmse: value };
     }
     return best;
+  }, null);
+}
+
+function getApiBaseUrl() {
+  return (
+    window.RUL_API_URL ||
+    new URLSearchParams(window.location.search).get("api") ||
+    localStorage.getItem("RUL_API_URL") ||
+    ""
+  ).replace(/\/$/, "");
+}
+
+function updateApiStatus(message, isApiResult = false) {
+  const status = document.querySelector("#api-status");
+  if (!status) return;
+  status.textContent = message;
+  status.classList.toggle("api-live", isApiResult);
+}
+
+function bestModelFor(subset) {
+  return modelRows.reduce((best, row) => {
+    if (!best) return row;
+    return row.results[subset].rmse < best.results[subset].rmse ? row : best;
   }, null);
 }
 
@@ -64,6 +96,150 @@ function renderTable(rows) {
       return `<tr><td>${row.name}</td>${cells}</tr>`;
     })
     .join("");
+}
+
+function normalizeRiskBand(value, rul) {
+  const band = String(value || "").toLowerCase();
+  if (band.includes("critical") || rul < 35) {
+    return { label: "Critical", className: "critical" };
+  }
+  if (band.includes("watch") || rul < 70) {
+    return { label: "Watch", className: "watch" };
+  }
+  return { label: "Stable", className: "stable" };
+}
+
+function getRecommendation(risk, fromApi) {
+  if (risk.label === "Critical") {
+    return fromApi
+      ? "Real model inference indicates a short remaining useful life. Prioritize inspection."
+      : "Prioritize inspection and prepare a maintenance action. The sensor pattern indicates accelerated degradation.";
+  }
+  if (risk.label === "Watch") {
+    return fromApi
+      ? "Real model inference suggests a watch zone. Increase monitoring frequency."
+      : "Increase monitoring frequency and review recent cycles for trend changes before the next operating window.";
+  }
+  return fromApi
+    ? "Real model inference indicates stable remaining life for the sample window."
+    : "Continue routine monitoring. Schedule a sensor trend review within the next maintenance window.";
+}
+
+function setPredictionResult({ rul, risk, modelName, rmse, score, dataset, confidence, recommendation }) {
+  document.querySelector("#rul-output").textContent = Math.round(rul);
+  document.querySelector("#confidence-fill").style.width = `${confidence}%`;
+  document.querySelector("#recommendation").textContent = recommendation;
+  document.querySelector("#rmse-output").textContent = formatMetric(rmse);
+  document.querySelector("#score-output").textContent = formatMetric(score);
+  document.querySelector("#dataset-output").textContent = dataset;
+  document.querySelector("#selected-model").textContent = modelName;
+
+  const riskPill = document.querySelector("#risk-pill");
+  riskPill.textContent = risk.label;
+  riskPill.className = `risk-pill ${risk.className}`;
+}
+
+function updateRangeReadouts() {
+  ["temperature-margin", "vibration-severity", "pressure-drift"].forEach((id) => {
+    document.querySelector(`#${id}-value`).textContent = document.querySelector(`#${id}`).value;
+  });
+}
+
+function parseSensorImpact() {
+  const raw = document.querySelector("#sensor-row").value.trim();
+  if (!raw) return 0;
+
+  const values = raw
+    .split(",")
+    .map((value) => Number(value.trim()))
+    .filter((value) => Number.isFinite(value));
+
+  if (!values.length) return 0;
+
+  const averageMagnitude = values.reduce((sum, value) => sum + Math.abs(value), 0) / values.length;
+  return Math.min(18, averageMagnitude % 22);
+}
+
+function demoPrediction(subset, selectedResult) {
+  const cycle = Number(document.querySelector("#cycle-count").value);
+  const temperature = Number(document.querySelector("#temperature-margin").value);
+  const vibration = Number(document.querySelector("#vibration-severity").value);
+  const pressure = Number(document.querySelector("#pressure-drift").value);
+  const profile = subsetProfiles[subset];
+
+  const degradation =
+    cycle * 0.34 +
+    temperature * 0.46 +
+    vibration * 0.58 +
+    pressure * 0.32 +
+    parseSensorImpact();
+
+  const rawRul = profile.baseLife - degradation * profile.complexity + selectedResult.rmse * 0.74;
+  const rul = Math.max(8, Math.round(rawRul));
+  const confidence = Math.max(42, Math.min(92, Math.round(96 - selectedResult.rmse * 1.45 - degradation * 0.08)));
+  const risk = normalizeRiskBand("", rul);
+
+  return {
+    rul,
+    risk,
+    confidence,
+    recommendation: getRecommendation(risk, false),
+  };
+}
+
+async function runPrediction(event) {
+  event.preventDefault();
+  updateRangeReadouts();
+
+  if (!modelRows.length) {
+    updateApiStatus("Loading model metrics before prediction can run.");
+    return;
+  }
+
+  const subset = document.querySelector("#prediction-subset").value;
+  const selectedBest = bestModelFor(subset);
+  const selectedResult = selectedBest.results[subset];
+  const apiBaseUrl = getApiBaseUrl();
+
+  if (apiBaseUrl) {
+    updateApiStatus(`Calling configured API: ${apiBaseUrl}`, true);
+    try {
+      const response = await fetch(`${apiBaseUrl}/sample/${subset}`);
+      if (response.ok) {
+        const result = await response.json();
+        const rul = Number(result.predicted_rul_cycles);
+        const risk = normalizeRiskBand(result.risk_band, rul);
+        const confidence = Math.max(42, Math.min(92, Math.round(96 - selectedResult.rmse * 1.45)));
+
+        setPredictionResult({
+          rul,
+          risk,
+          modelName: String(result.model_name || selectedBest.name).replaceAll("_", "-"),
+          rmse: selectedResult.rmse,
+          score: selectedResult.score,
+          dataset: result.subset || subset,
+          confidence,
+          recommendation: getRecommendation(risk, true),
+        });
+        updateApiStatus(`Prediction returned from ${apiBaseUrl}`, true);
+        return;
+      }
+      updateApiStatus(`API returned ${response.status}; using browser demo fallback.`);
+    } catch (error) {
+      updateApiStatus("API unavailable or sleeping; using browser demo fallback.");
+    }
+  } else {
+    updateApiStatus("Using browser demo prediction until an API URL is configured.");
+  }
+
+  const fallback = demoPrediction(subset, selectedResult);
+  setPredictionResult({
+    ...fallback,
+    modelName: selectedBest.name,
+    rmse: selectedResult.rmse,
+    score: selectedResult.score,
+    dataset: subset,
+  });
 }
 
 function renderBars(rows) {
@@ -131,16 +307,25 @@ async function renderMetadata() {
 fetch("metrics_summary.json")
   .then((response) => response.json())
   .then((metrics) => {
-    const rows = getRows(metrics);
-    renderTable(rows);
-    renderBars(rows);
+    modelRows = getRows(metrics);
+    renderTable(modelRows);
+    renderBars(modelRows);
+    document.querySelector("#prediction-form").dispatchEvent(new Event("submit"));
   })
   .catch(() => {
     document.querySelector("#results-body").innerHTML =
       '<tr><td colspan="5">Unable to load metrics_summary.json.</td></tr>';
+    updateApiStatus("Unable to load metrics; prediction workspace is unavailable.");
   });
 
 renderMetadata().catch(() => {
   document.querySelector("#metadata-grid").innerHTML =
     "<article>Unable to load preprocessing metadata.</article>";
 });
+
+["temperature-margin", "vibration-severity", "pressure-drift"].forEach((id) => {
+  document.querySelector(`#${id}`).addEventListener("input", updateRangeReadouts);
+});
+
+document.querySelector("#prediction-form").addEventListener("submit", runPrediction);
+updateRangeReadouts();
