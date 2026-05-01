@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Turbofan RUL Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <nav class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="#overview">Turbofan RUL</a>
+        <div class="nav-links">
+          <a href="#results">Results</a>
+          <a href="#visuals">Visuals</a>
+          <a href="RUL_FINAL_PROJECT.ipynb">Notebook</a>
+          <a href="https://github.com/rahulxdadwal/turbofan-RUL-prediction">GitHub</a>
+        </div>
+      </nav>
+
+      <section class="hero" id="overview">
+        <div class="hero-copy">
+          <p class="eyebrow">Predictive maintenance dashboard</p>
+          <h1>Remaining Useful Life prediction for NASA C-MAPSS turbofan engines</h1>
+          <p>
+            A deep learning workflow comparing sequence models for aircraft engine
+            degradation across FD001, FD002, FD003, and FD004.
+          </p>
+          <div class="hero-actions" aria-label="Project links">
+            <a class="button primary" href="#results">View model results</a>
+            <a class="button secondary" href="RUL_FINAL_PROJECT.ipynb">Open notebook</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Best model summary">
+          <div>
+            <span class="metric-label">Best FD001 RMSE</span>
+            <strong>12.558</strong>
+            <span>SA-FCLCNN-TF</span>
+          </div>
+          <div>
+            <span class="metric-label">Best FD003 RMSE</span>
+            <strong>12.506</strong>
+            <span>SA-FCLCNN-TF-PINN</span>
+          </div>
+          <div>
+            <span class="metric-label">Window size</span>
+            <strong>50</strong>
+            <span>cycles per sequence</span>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="section summary-grid" aria-label="Project highlights">
+        <article>
+          <span>Dataset</span>
+          <strong>NASA C-MAPSS</strong>
+          <p>Multivariate time-series readings from simulated turbofan engines.</p>
+        </article>
+        <article>
+          <span>Task</span>
+          <strong>RUL regression</strong>
+          <p>Estimate remaining cycles before failure using sensor degradation patterns.</p>
+        </article>
+        <article>
+          <span>Evaluation</span>
+          <strong>RMSE and NASA score</strong>
+          <p>Model comparison covers all four operating-condition subsets.</p>
+        </article>
+      </section>
+
+      <section class="section" id="results">
+        <div class="section-heading">
+          <p class="eyebrow">Model comparison</p>
+          <h2>Final RMSE results</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>FD001</th>
+                <th>FD002</th>
+                <th>FD003</th>
+                <th>FD004</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+              <tr>
+                <td colspan="5">Loading results...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section chart-section" aria-label="Best model chart">
+        <div class="section-heading">
+          <p class="eyebrow">Best per subset</p>
+          <h2>Lowest RMSE by dataset</h2>
+        </div>
+        <div class="bars" id="best-bars"></div>
+      </section>
+
+      <section class="section visuals" id="visuals">
+        <div class="section-heading">
+          <p class="eyebrow">Experiment visuals</p>
+          <h2>Sensor behavior and training curves</h2>
+        </div>
+        <div class="visual-grid">
+          <figure>
+            <img src="assets/sensor_degradation.png" alt="Sensor degradation over engine life">
+            <figcaption>Sensor degradation</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/sensor_selection.png" alt="Selected turbofan sensors">
+            <figcaption>Sensor selection</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/lstm_learning_curves.png" alt="LSTM model learning curves">
+            <figcaption>LSTM learning curves</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Built by Rahul Dadwal</span>
+      <a href="metrics_summary.json">Metrics JSON</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
