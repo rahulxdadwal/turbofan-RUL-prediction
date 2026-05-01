@@ -11,7 +11,8 @@ env/
 
 # Raw datasets
 CMaps/
-data/
+data/*
+!data/README.md
 *.txt
 !requirements.txt
 

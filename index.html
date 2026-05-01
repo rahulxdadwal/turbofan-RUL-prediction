@@ -8,7 +8,7 @@
       content="Rahul Dadwal's turbofan engine Remaining Useful Life prediction project using NASA C-MAPSS, preprocessing pipelines, and deep learning model comparison."
     >
     <title>Turbofan RUL Prediction | Rahul Dadwal</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="app/styles.css">
   </head>
   <body>
     <header class="app-header" id="overview">
@@ -35,7 +35,7 @@
           <div class="hero-actions" aria-label="Project links">
             <a class="button primary" href="#predictor">Run Prediction</a>
             <a class="button secondary" href="#results">Explore Results</a>
-            <a class="button secondary" href="RUL_FINAL_PROJECT.ipynb">Open Final Notebook</a>
+            <a class="button secondary" href="notebooks/modeling/final_rul_modeling.ipynb">Open Final Notebook</a>
           </div>
         </div>
 
@@ -231,27 +231,27 @@
         </div>
         <div class="artifact-grid">
           <figure>
-            <img src="assets/sensor_degradation.png" alt="Sensor degradation over engine life">
+            <img src="app/assets/sensor_degradation.png" alt="Sensor degradation over engine life">
             <figcaption>Sensor degradation</figcaption>
           </figure>
           <figure>
-            <img src="assets/sensor_selection.png" alt="Selected turbofan sensors">
+            <img src="app/assets/sensor_selection.png" alt="Selected turbofan sensors">
             <figcaption>Sensor selection</figcaption>
           </figure>
           <figure>
-            <img src="assets/lstm_learning_curves.png" alt="LSTM model learning curves">
+            <img src="app/assets/lstm_learning_curves.png" alt="LSTM model learning curves">
             <figcaption>LSTM learning curves</figcaption>
           </figure>
           <figure>
-            <img src="outputs%202/outputs-01A/eda_sensor_trends_FD001.png" alt="FD001 sensor trend EDA">
+            <img src="exports/preprocessing/01A/eda_sensor_trends_FD001.png" alt="FD001 sensor trend EDA">
             <figcaption>FD001 sensor trends</figcaption>
           </figure>
           <figure>
-            <img src="outputs%202/outputs-01A/eda_corr_heatmap_FD001.png" alt="FD001 correlation heatmap">
+            <img src="exports/preprocessing/01A/eda_corr_heatmap_FD001.png" alt="FD001 correlation heatmap">
             <figcaption>FD001 correlation heatmap</figcaption>
           </figure>
           <figure>
-            <img src="outputs%202/outputs-01D/synth_qa_FD001.png" alt="Synthetic data quality check for FD001">
+            <img src="exports/preprocessing/01D/synth_qa_FD001.png" alt="Synthetic data quality check for FD001">
             <figcaption>Synthetic QA check</figcaption>
           </figure>
         </div>
@@ -273,12 +273,12 @@
           <h2>Project notebooks</h2>
         </div>
         <div class="notebook-grid">
-          <a href="01A_data_preprocessing.ipynb">01A data preprocessing</a>
-          <a href="01B_data_preprocessing.ipynb">01B data preprocessing</a>
-          <a href="01C_data_preprocessing.ipynb">01C data preprocessing</a>
-          <a href="01D_data_preprocessing%20(1).ipynb">01D data preprocessing</a>
-          <a href="RUL_FINAL_PROJECT.ipynb">Final RUL modeling notebook</a>
-          <a href="metrics_summary.json">Metrics summary JSON</a>
+          <a href="notebooks/data/01A_data_preprocessing.ipynb">01A data preprocessing</a>
+          <a href="notebooks/data/01B_data_preprocessing.ipynb">01B data preprocessing</a>
+          <a href="notebooks/data/01C_data_preprocessing.ipynb">01C data preprocessing</a>
+          <a href="notebooks/data/01D_data_preprocessing.ipynb">01D data preprocessing</a>
+          <a href="notebooks/modeling/final_rul_modeling.ipynb">Final RUL modeling notebook</a>
+          <a href="exports/metrics_summary.json">Metrics summary JSON</a>
         </div>
       </section>
     </main>
@@ -288,6 +288,6 @@
       <a href="https://github.com/rahulxdadwal/turbofan-RUL-prediction">View repository</a>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="app/script.js"></script>
   </body>
 </html>

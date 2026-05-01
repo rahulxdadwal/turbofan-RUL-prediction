@@ -48,33 +48,37 @@ Best results among my models:
 - `FD003`: SA-FCLCNN-TF-PINN with RMSE `12.506`
 - `FD004`: SA-FCLCNN-TF-PINN with RMSE `24.657`
 
-Detailed metrics are available in [metrics_summary.json](metrics_summary.json).
+Detailed metrics are available in [exports/metrics_summary.json](exports/metrics_summary.json).
 
 ## Repository Structure
 
 ```text
 turbofan-rul-prediction/
-├── 01A_data_preprocessing.ipynb
-├── 01B_data_preprocessing.ipynb
-├── 01C_data_preprocessing.ipynb
-├── 01D_data_preprocessing (1).ipynb
-├── RUL_FINAL_PROJECT.ipynb
 ├── index.html
-├── styles.css
-├── script.js
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
-├── metrics_summary.json
-├── outputs 2/
-│   ├── outputs-01A/
-│   ├── outputs-01B/
-│   ├── outputs-01C/
-│   └── outputs-01D/
-└── assets/
-    ├── sensor_degradation.png
-    ├── sensor_selection.png
-    └── lstm_learning_curves.png
+├── app/
+│   ├── script.js
+│   ├── styles.css
+│   └── assets/
+├── data/
+│   └── README.md
+├── exports/
+│   ├── metrics_summary.json
+│   └── preprocessing/
+│       ├── 01A/
+│       ├── 01B/
+│       ├── 01C/
+│       └── 01D/
+└── notebooks/
+    ├── data/
+    │   ├── 01A_data_preprocessing.ipynb
+    │   ├── 01B_data_preprocessing.ipynb
+    │   ├── 01C_data_preprocessing.ipynb
+    │   └── 01D_data_preprocessing.ipynb
+    └── modeling/
+        └── final_rul_modeling.ipynb
 ```
 
 ## Setup
@@ -88,7 +92,7 @@ pip install -r requirements.txt
 
 3. Download the dataset from Kaggle.
 4. Keep the expected local folder structure used by the notebook.
-5. Open `RUL_FINAL_PROJECT.ipynb` in Jupyter Notebook or JupyterLab and run cells in order.
+5. Open `notebooks/modeling/final_rul_modeling.ipynb` in Jupyter Notebook or JupyterLab and run cells in order.
 
 ## Notes
 
@@ -100,15 +104,15 @@ pip install -r requirements.txt
 
 ### Sensor Degradation
 
-![Sensor degradation](assets/sensor_degradation.png)
+![Sensor degradation](app/assets/sensor_degradation.png)
 
 ### Sensor Selection
 
-![Sensor selection](assets/sensor_selection.png)
+![Sensor selection](app/assets/sensor_selection.png)
 
 ### Learning Curves
 
-![LSTM learning curves](assets/lstm_learning_curves.png)
+![LSTM learning curves](app/assets/lstm_learning_curves.png)
 
 ## Author
 

@@ -3,23 +3,23 @@ const subsets = ["FD001", "FD002", "FD003", "FD004"];
 const metadataFiles = [
   {
     label: "01A",
-    path: "outputs%202/outputs-01A/preprocessing_metadata.json",
-    features: "outputs%202/outputs-01A/selected_features.json",
+    path: "exports/preprocessing/01A/preprocessing_metadata.json",
+    features: "exports/preprocessing/01A/selected_features.json",
   },
   {
     label: "01B",
-    path: "outputs%202/outputs-01B/preprocessing_metadata_01B.json",
-    features: "outputs%202/outputs-01B/selected_features_01B.json",
+    path: "exports/preprocessing/01B/preprocessing_metadata_01B.json",
+    features: "exports/preprocessing/01B/selected_features_01B.json",
   },
   {
     label: "01C",
-    path: "outputs%202/outputs-01C/preprocessing_metadata_01C.json",
-    features: "outputs%202/outputs-01C/selected_features_01C.json",
+    path: "exports/preprocessing/01C/preprocessing_metadata_01C.json",
+    features: "exports/preprocessing/01C/selected_features_01C.json",
   },
   {
     label: "01D",
-    path: "outputs%202/outputs-01D/preprocessing_metadata_01D.json",
-    features: "outputs%202/outputs-01D/selected_features_01D.json",
+    path: "exports/preprocessing/01D/preprocessing_metadata_01D.json",
+    features: "exports/preprocessing/01D/selected_features_01D.json",
   },
 ];
 
@@ -304,7 +304,7 @@ async function renderMetadata() {
     .join("");
 }
 
-fetch("metrics_summary.json")
+fetch("exports/metrics_summary.json")
   .then((response) => response.json())
   .then((metrics) => {
     modelRows = getRows(metrics);
@@ -314,7 +314,7 @@ fetch("metrics_summary.json")
   })
   .catch(() => {
     document.querySelector("#results-body").innerHTML =
-      '<tr><td colspan="5">Unable to load metrics_summary.json.</td></tr>';
+      '<tr><td colspan="5">Unable to load exports/metrics_summary.json.</td></tr>';
     updateApiStatus("Unable to load metrics; prediction workspace is unavailable.");
   });
 
