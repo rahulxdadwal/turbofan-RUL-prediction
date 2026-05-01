@@ -94,4 +94,5 @@ pip install -r requirements.txt
 ![LSTM learning curves](assets/lstm_learning_curves.png)
 
 ## Author
-RAHUL DADWAL
+
+Rahul Dadwal
