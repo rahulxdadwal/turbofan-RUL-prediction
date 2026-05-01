@@ -1,0 +1,29 @@
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Raw datasets
+CMaps/
+data/
+*.txt
+!requirements.txt
+
+# Large outputs and artifacts
+outputs/
+outputs-01D/
+model_export/
+*.keras
+*.h5
+*.pkl
+*.npz
+*.zip
+
+# Local notebook noise
+Untitled*.ipynb
