@@ -4,6 +4,10 @@ Deep learning project for Remaining Useful Life (RUL) prediction on NASA C-MAPSS
 
 This repository contains my final Jupyter notebook, experiment outputs, and model comparison results for turbofan engine predictive maintenance. The goal is to estimate how many cycles remain before engine failure using multivariate time-series sensor data.
 
+## Live App
+
+[Open the deployed project dashboard](https://rahulxdadwal.github.io/turbofan-RUL-prediction/)
+
 ## Dataset
 
 - Source: [NASA C-MAPSS Turbofan Engine RUL Dataset on Kaggle](http://kaggle.com/datasets/fareselgohary003/nasa-cmapss-turbofan-engine-rul-dataset)
